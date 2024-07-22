@@ -1,3 +1,5 @@
+const prompt = require("prompt-sync")();
+
 function adicionarAtividade(atividades, prompt) {
     let dias = prompt("Digite o dia da atividade: ");
     if (!isNaN(Number(dias)) && Number(dias) > 0 && Number(dias) <= 30) {
@@ -26,12 +28,12 @@ function listarAtividades(atividades) {
     if (atividades.length === 0) {
         console.log("Nenhuma atividade adicionada ainda.");
     } else {
-        for (let i = 0; i < atividades.length; i++) {
-            console.log("Dia: " + atividades[i].dia);
-            for (let j = 0; j < atividades[i].atividades_diarias.length; j++) {
-                console.log("  Atividade " + (j + 1) + ": " + atividades[i].atividades_diarias[j]);
-            }
-        }
+        atividades.forEach((diario) => {
+            console.log("Dia: " + diario.dia);
+            diario.atividades_diarias.forEach((atividade, index) => {
+                console.log("  Atividade " + (index + 1) + ": " + atividade);
+            });
+        });
     }
 }
 
@@ -39,16 +41,15 @@ function encontrarAtividade(atividades, prompt) {
     let dias = prompt("Digite o dia que deseja encontrar: ");
     if (!isNaN(Number(dias))) {
         let diaEncontrado = false;
-        for (let i = 0; i < atividades.length; i++) {
-            if (atividades[i].dia === dias) {
+        atividades.forEach((diario) => {
+            if (diario.dia === dias) {
                 diaEncontrado = true;
                 console.log("Atividades do dia " + dias + ":");
-                for (let j = 0; j < atividades[i].atividades_diarias.length; j++) {
-                    console.log("  Atividade " + (j + 1) + ": " + atividades[i].atividades_diarias[j]);
-                }
-                break;
+                diario.atividades_diarias.forEach((atividade, index) => {
+                    console.log("  Atividade " + (index + 1) + ": " + atividade);
+                });
             }
-        }
+        });
         if (!diaEncontrado) {
             console.log("Dia não encontrado.");
         }
@@ -61,14 +62,13 @@ function excluirAtividade(atividades, prompt) {
     let dias = prompt("Digite o dia da atividade a ser excluída: ");
     if (!isNaN(Number(dias))) {
         let diaEncontrado = false;
-        for (let i = 0; i < atividades.length; i++) {
-            if (atividades[i].dia === dias) {
-                atividades.splice(i, 1);
+        atividades.forEach((diario, index) => {
+            if (diario.dia === dias) {
+                atividades.splice(index, 1);
                 diaEncontrado = true;
                 console.log("Atividade do dia " + dias + " foi apagada.");
-                break;
             }
-        }
+        });
         if (!diaEncontrado) {
             console.log("Dia não encontrado.");
         }
